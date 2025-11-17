@@ -1,15 +1,18 @@
+#include "Template.hpp"
 #include <iostream>
-#include "CppProjectTemplate.hpp"
+
+// TODO
+// - [ ] make template name dynamic.
+// - [ ] generate .clang-format file using clang-format -dump-config command.
 
 int main()
 {
-    const CppProjectTemplate tmpl{"sandbox"};
-    CppProjectTemplate::Error err = tmpl.create();
-    if (err != CppProjectTemplate::Error::NoError)
+    Template::Error err = Template::create();
+    if (err != Template::Error::NoError)
     {
         return 1;
     }
 
-    std::cout << "Project created successfully!\n";
+    std::cout << "Template created successfully.\n";
     return 0;
 }
