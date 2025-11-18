@@ -3,31 +3,39 @@
 #include <array>
 #include <filesystem>
 
-namespace Template
+class Template
 {
-enum class Error : uint8_t
-{
-    NoError,
-    FailedToCreateDir,
-    FailedToCreateGitignore,
-    FailedToWriteTemplatedFiles,
-};
+  public:
+    enum class Error : uint8_t
+    {
+        NoError,
+        FailedToCreateDir,
+        FailedToCreateGitignore,
+        FailedToWriteTemplatedFiles,
+    };
 
-const std::filesystem::path __pwd = std::filesystem::current_path();
-constexpr const char *__projectName = "sandbox";
-constexpr std::array<const char *, 3> __dirs = {
-    "src",
-    "include",
-    "build",
-};
+    Template(const char *projectName) : m_projectName(projectName)
+    {
+    }
 
-constexpr std::array<const char *, 3> __gitignore = {
-    "build/*",
-    ".cache/",
-    "compile_commands.json",
-};
+    [[nodiscard]] Error create();
 
-constexpr const char *__mainCppContent = R"(
+  private:
+    const std::filesystem::path m_pwd = std::filesystem::current_path();
+    const char *m_projectName = "sandbox";
+    static constexpr std::array<const char *, 3> s_dirs = {
+        "src",
+        "include",
+        "build",
+    };
+
+    static constexpr std::array<const char *, 3> s_gitignore = {
+        "build/*",
+        ".cache/",
+        "compile_commands.json",
+    };
+
+    static constexpr const char *s_mainCppContent = R"(
 #include <iostream>
 
 int main()
@@ -37,7 +45,7 @@ int main()
 }
 )";
 
-constexpr const char *__cmakeListsTxtContent = R"(
+    static constexpr const char *s_cmakeListsTxtContent = R"(
 cmake_minimum_required(VERSION 3.10)
 
 set(PROJECT sandbox)
@@ -53,8 +61,7 @@ add_executable(${PROJECT} src/main.cpp)
 target_include_directories(${PROJECT} PUBLIC "include")
 )";
 
-[[nodiscard]] Error __createDirs();
-[[nodiscard]] Error __createGitignore();
-[[nodiscard]] Error __createFiles();
-[[nodiscard]] Error create();
-}; // namespace Template
+    [[nodiscard]] Error createDirs();
+    [[nodiscard]] Error createGitignore();
+    [[nodiscard]] Error createFiles();
+};

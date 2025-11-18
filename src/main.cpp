@@ -7,7 +7,9 @@
 
 int main()
 {
-    Template::Error err = Template::create();
+    Template tmpl{"example"};
+
+    Template::Error err = tmpl.create();
     if (err != Template::Error::NoError)
     {
         return 1;

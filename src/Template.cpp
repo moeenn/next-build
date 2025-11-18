@@ -3,9 +3,9 @@
 
 namespace fs = std::filesystem;
 
-[[nodiscard]] Template::Error Template::__createDirs()
+[[nodiscard]] Template::Error Template::createDirs()
 {
-    fs::path projectPath = __pwd / __projectName;
+    fs::path projectPath = m_pwd / m_projectName;
     bool isCreated = fs::create_directory(projectPath);
     if (!isCreated)
     {
@@ -13,9 +13,9 @@ namespace fs = std::filesystem;
         return Error::FailedToCreateDir;
     }
 
-    for (const char *dir : __dirs)
+    for (const char *dir : s_dirs)
     {
-        fs::path fullpath = __pwd / __projectName / dir;
+        fs::path fullpath = m_pwd / m_projectName / dir;
         isCreated = fs::create_directory(fullpath);
         if (!isCreated)
         {
@@ -27,13 +27,13 @@ namespace fs = std::filesystem;
     return Error::NoError;
 }
 
-[[nodiscard]] Template::Error Template::__createGitignore()
+[[nodiscard]] Template::Error Template::createGitignore()
 {
     try
     {
-        const fs::path fullpath = __pwd / __projectName / ".gitignore";
+        const fs::path fullpath = m_pwd / m_projectName / ".gitignore";
         std::ofstream file(fullpath);
-        for (const char *line : __gitignore)
+        for (const char *line : s_gitignore)
         {
             file << line << "\n";
         }
@@ -48,19 +48,19 @@ namespace fs = std::filesystem;
     return Error::NoError;
 }
 
-[[nodiscard]] Template::Error Template::__createFiles()
+[[nodiscard]] Template::Error Template::createFiles()
 {
-    fs::path mainCppPath = __pwd / __projectName / "src" / "main.cpp";
-    fs::path cmakelistsPath = __pwd / __projectName / "CMakeLists.txt";
+    fs::path mainCppPath = m_pwd / m_projectName / "src" / "main.cpp";
+    fs::path cmakelistsPath = m_pwd / m_projectName / "CMakeLists.txt";
 
     try
     {
         std::ofstream mainCppFile(mainCppPath);
-        mainCppFile << __mainCppContent;
+        mainCppFile << s_mainCppContent;
         mainCppFile.close();
 
         std::ofstream cmakelistsFile(cmakelistsPath);
-        cmakelistsFile << __cmakeListsTxtContent;
+        cmakelistsFile << s_cmakeListsTxtContent;
         cmakelistsFile.close();
     }
     catch (const std::exception &ex)
@@ -74,19 +74,19 @@ namespace fs = std::filesystem;
 
 [[nodiscard]] Template::Error Template::create()
 {
-    Error err = __createDirs();
+    Error err = createDirs();
     if (err != Error::NoError)
     {
         return err;
     }
 
-    err = __createGitignore();
+    err = createGitignore();
     if (err != Error::NoError)
     {
         return err;
     }
 
-    err = __createFiles();
+    err = createFiles();
     if (err != Error::NoError)
     {
         return err;
