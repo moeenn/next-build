@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Colors
+namespace colors
 {
     constexpr const char *RS = "\033[0m";
     constexpr const char *FBLK = "\x1B[90m";

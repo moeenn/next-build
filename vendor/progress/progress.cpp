@@ -1,4 +1,4 @@
-#include "Progress.hpp"
+#include "progress.hpp"
 #include <cstdio>
 
 void Progress::char_repeat(char *buf, size_t start, char c, int n) const

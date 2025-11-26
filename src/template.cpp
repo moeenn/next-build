@@ -1,4 +1,4 @@
-#include "Template.hpp"
+#include "template.hpp"
 #include <fstream>
 
 namespace fs = std::filesystem;

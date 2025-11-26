@@ -1,7 +1,7 @@
 #pragma once
 #include <cstdlib>
 
-namespace Command
+namespace command
 {
     bool exec(const char* cmd);
 };
